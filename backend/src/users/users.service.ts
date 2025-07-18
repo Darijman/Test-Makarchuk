@@ -62,7 +62,6 @@ export class UsersService {
     if (updateUserDto.height && updateUserDto.height !== user.height) return true;
     if (updateUserDto.sex && updateUserDto.sex !== user.sex) return true;
     if (updateUserDto.address && updateUserDto.address !== user.address) return true;
-    if (updateUserDto.imagePath && updateUserDto.imagePath !== user.imagePath) return true;
 
     return false;
   }

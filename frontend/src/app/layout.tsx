@@ -3,6 +3,8 @@ import { Header } from '@/ui/header/Header';
 import { ThemeProvider } from 'next-themes';
 import { ConfigProvider } from 'antd';
 import { theme } from '@/antdConfig';
+import { ReduxProvider } from '@/providers/reduxProvider';
+
 import '@ant-design/v5-patch-for-react-19';
 import './globals.css';
 
@@ -18,12 +20,14 @@ export default function RootLayout({
   return (
     <html lang='en' suppressHydrationWarning>
       <body>
-        <ConfigProvider theme={theme}>
-          <ThemeProvider attribute='data-theme' defaultTheme='system' enableSystem>
-            <Header />
-            <main>{children}</main>
-          </ThemeProvider>
-        </ConfigProvider>
+        <ReduxProvider>
+          <ConfigProvider theme={theme}>
+            <ThemeProvider attribute='data-theme' defaultTheme='system' enableSystem>
+              <Header />
+              <main>{children}</main>
+            </ThemeProvider>
+          </ConfigProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

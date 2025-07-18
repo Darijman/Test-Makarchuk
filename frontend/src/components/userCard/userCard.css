@@ -1,0 +1,58 @@
+.user_card {
+  position: relative;
+  padding: 20px;
+  background-color: var(--foreground-color);
+  border-radius: 10px;
+  width: 100%;
+  overflow: hidden;
+  &:hover {
+    background-color: var(--hover-color);
+  }
+}
+
+.user_card_list {
+  list-style-type: none;
+  padding: 0px;
+  margin: 20px 0px 0px 0px;
+}
+
+.user_card_list_item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  width: 200px;
+}
+
+.user_card_list_item_text {
+  font-size: 16px !important;
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+.user_card_edit_button,
+.user_card_delete_button {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  text-transform: uppercase !important;
+  background-color: var(--foreground-color) !important;
+  text-align: center !important;
+  &:hover {
+    color: var(--secondary-text-color) !important;
+    opacity: 0.7 !important;
+  }
+}
+
+.user_card_edit_button {
+  margin-bottom: 20px;
+}
+
+.user_card_delete_button {
+  border: 1px solid var(--red-color) !important;
+}
+
+.user_card_edit_button {
+  border: 1px solid var(--submit-button-color) !important;
+}
+

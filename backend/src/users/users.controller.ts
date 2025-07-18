@@ -25,33 +25,38 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
-  async createNewUser(@Body() createUserDto: CreateUserDto, @UploadedFile() file: Express.Multer.File): Promise<User> {
-    if (file) {
-      createUserDto.imagePath = file.filename;
-    }
-    return await this.usersService.createNewUser(createUserDto);
+  async createNewUser(@Body() createUserDto: CreateUserDto, @UploadedFile() image: Express.Multer.File): Promise<User> {
+    const imagePath = image?.filename || '';
+    const userData = {
+      ...createUserDto,
+      imagePath,
+    };
+    return await this.usersService.createNewUser(userData);
   }
 
   @Put(':userId')
   @UseInterceptors(FileInterceptor('image', multerConfig))
   async updateUserById(
     @Param('userId') userId: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() image: Express.Multer.File,
     @Body() updateUserDto: UpdateUserDto,
   ): Promise<User> {
     const user = await this.usersService.getUserById(userId);
 
-    if (file) {
+    if (image) {
       if (user.imagePath) {
         const oldImagePath = path.resolve('public', 'uploads', user.imagePath);
-
         if (fs.existsSync(oldImagePath)) {
           fs.unlinkSync(oldImagePath);
         }
       }
-      updateUserDto.imagePath = file.filename;
     }
-    return await this.usersService.updateUserById(userId, updateUserDto);
+
+    const userData = {
+      ...updateUserDto,
+      imagePath: image.filename,
+    };
+    return await this.usersService.updateUserById(userId, userData);
   }
 
   @Delete(':userId')

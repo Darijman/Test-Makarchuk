@@ -32,7 +32,7 @@ export const Header = () => {
             iconPosition='start'
             icon={<PlusCircleOutlined style={{ fontSize: '20px' }} />}
             className='header_new_user_button'
-            onClick={() => router.push('/new-user')}
+            onClick={() => router.push('/newUser')}
           >
             New User
           </Button>

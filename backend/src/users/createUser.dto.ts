@@ -33,10 +33,8 @@ export class CreateUserDto {
 
   @IsString()
   @IsNotEmpty({ message: 'Address should not be empty!' })
+  @MinLength(5, { message: 'Address is too short (minimum is 5 characters)' })
+  @MaxLength(150, { message: 'Address is too long (maximum is 150 characters)' })
   @Transform(({ value }) => (typeof value === 'string' ? value.trim() : value))
   address: string;
-
-  @IsOptional()
-  @IsString()
-  imagePath?: string;
 }
