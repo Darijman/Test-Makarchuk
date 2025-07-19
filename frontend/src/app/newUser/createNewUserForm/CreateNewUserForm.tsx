@@ -98,8 +98,6 @@ export const CreateNewUserForm = ({ style, edit, editedUser, onChange, onImageCh
       form.resetFields();
       setFileList([]);
     } catch (error: any) {
-      console.log(`error`, error);
-
       messageApi.open({
         type: 'error',
         content: error.error || 'Something went wrong! Try again later..',
