@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { PlusCircleOutlined } from '@ant-design/icons';
 import { useRouter } from 'next/navigation';
 import './header.css';
+import './responsive.css';
 
 const { Title } = Typography;
 

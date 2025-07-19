@@ -3,7 +3,7 @@ import { Header } from '@/ui/header/Header';
 import { ThemeProvider } from 'next-themes';
 import { ConfigProvider } from 'antd';
 import { theme } from '@/antdConfig';
-import { ReduxProvider } from '@/providers/reduxProvider';
+import { ReduxProvider } from '@/providers/ReduxProvider';
 
 import '@ant-design/v5-patch-for-react-19';
 import './globals.css';

@@ -1,7 +1,6 @@
 'use client';
 
 import { Typography } from 'antd';
-import './newUser.css';
 import { CreateNewUserForm } from './createNewUserForm/CreateNewUserForm';
 
 const { Title } = Typography;

@@ -3,3 +3,9 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
 }
+
+[data-theme='dark'] {
+  .custom_pagination .ant-pagination-item.ant-pagination-item-active a {
+    color: black;
+  }
+}

@@ -24,7 +24,7 @@ main {
 
 :root {
   --background-color: #ffffff;
-  --foreground-color: 		#eeeeee;
+  --foreground-color: #eeeeee;
   --hover-color: #e0e0e0;
   --primary-text-color: #000000;
   --secondary-text-color: #8e8e8e;
@@ -50,47 +50,115 @@ main {
 
 /*  antd start */
 
-/* Image Delete icon */
+/* Delete icon for uploaded image */
 .ant-upload-list-picture .ant-upload-list-item-actions .anticon-delete {
   color: var(--red-color) !important;
   transform: scale(1.5);
 }
 
-/* Image Delete icon:hover */
+/* Delete icon on hover */
 .ant-upload-list-picture .ant-upload-list-item-actions .anticon-delete:hover {
   transform: scale(1.7);
 }
 
-/* Image Container */
+/* Image item container */
 .ant-upload-list-picture .ant-upload-list-item {
   background-color: var(--background-color) !important;
   border: 1px solid var(--foreground-color) !important;
 }
 
-/* Image Container:hover */
+/* Image item container on hover */
 .ant-upload-list-picture .ant-upload-list-item:hover {
   border-color: var(--secondary-text-color) !important;
 }
 
-/* Цвет рамки */
+/* Drag & drop upload area border */
 .ant-upload.ant-upload-drag {
   background-color: var(--background-color);
   border: 2px solid var(--foreground-color);
 }
 
-/* Цвет рамки при наведении */
+/* Drag & drop area border on hover */
 .ant-upload.ant-upload-drag:hover {
-  border-color: var(--secondary-text-color) !important; /* Например: #40a9ff */
+  border-color: var(--secondary-text-color) !important; /* Example: #40a9ff */
 }
 
-/* Цвет рамки при фокусе (перетаскивании) */
+/* Drag & drop area border on drag over */
 .ant-upload.ant-upload-drag.ant-upload-drag-hover {
-  border-color: var(--primary-text-color) !important; /* Например: green */
+  border-color: var(--primary-text-color) !important; /* Example: green */
 }
 
-/* Cursor when hover image */
+/* Cursor style when hovering over image thumbnail */
 .ant-upload-list-item-thumbnail {
   cursor: default !important;
 }
 
+/* Pagination container */
+.custom_pagination {
+  display: inline-block;
+}
+
+/* Default pagination item style */
+.custom_pagination .ant-pagination-item {
+  border-radius: 8px;
+  border: 1px solid #d9d9d9;
+  transition: all 0.3s ease;
+  background-color: var(--foreground-color);
+  color: var(--primary-text-color);
+}
+
+/* Active pagination item */
+.custom_pagination .ant-pagination-item.ant-pagination-item-active {
+  background-color: var(--submit-button-color) !important;
+  border-color: var(--submit-button-color) !important;
+}
+
+/* Text color for active pagination item */
+.custom_pagination .ant-pagination-item.ant-pagination-item-active a {
+  color: #ffffff;
+}
+
+/* Hover effect for pagination items */
+.custom_pagination .ant-pagination-item:hover {
+  border-color: var(--secondary-text-color);
+}
+
+/* Arrow container (prev/next buttons) */
+.custom_pagination .ant-pagination-prev,
+.custom_pagination .ant-pagination-next {
+  border-radius: 8px;
+}
+
+/* Hover effect for arrow container */
+.custom_pagination .ant-pagination-prev:hover,
+.custom_pagination .ant-pagination-next:hover {
+  background-color: var(--foreground-color);
+  border-color: var(--foreground-color);
+}
+
+/* Default arrow icon color */
+.custom_pagination .ant-pagination-prev .anticon,
+.custom_pagination .ant-pagination-next .anticon {
+  color: var(--primary-text-color);
+  transition: color 0.3s ease;
+}
+
+/* Arrow icon color on hover */
+.custom_pagination .ant-pagination-prev:hover .anticon,
+.custom_pagination .ant-pagination-next:hover .anticon {
+  color: var(--secondary-text-color);
+}
+
+/* Disabled arrow icon color */
+.custom_pagination .ant-pagination-prev.ant-pagination-disabled .anticon,
+.custom_pagination .ant-pagination-next.ant-pagination-disabled .anticon {
+  color: gray !important;
+}
+
 /*  antd end */
+
+@media screen and (max-width: 500px) {
+  main {
+    padding: 100px 30px;
+  }
+}

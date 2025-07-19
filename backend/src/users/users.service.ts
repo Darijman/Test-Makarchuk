@@ -12,8 +12,14 @@ export class UsersService {
     private usersRepository: Repository<User>,
   ) {}
 
-  async getAllUsers(): Promise<User[]> {
-    return await this.usersRepository.find();
+  async getAllUsers(offset = 0, limit = 10): Promise<{ users: User[]; totalUsers: number }> {
+    const [users, totalUsers] = await this.usersRepository.findAndCount({
+      skip: offset,
+      take: limit,
+      order: { createdAt: 'DESC' },
+    });
+
+    return { users, totalUsers };
   }
 
   async createNewUser(createUserDto: CreateUserDto): Promise<User> {
@@ -34,13 +40,13 @@ export class UsersService {
     return { success: true };
   }
 
-  async updateUserById(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUserById(userId: number, updateUserDto: UpdateUserDto, image?: Express.Multer.File): Promise<User> {
     const user = await this.usersRepository.findOneBy({ id: userId });
     if (!user) {
       throw new NotFoundException({ error: 'User not found!' });
     }
 
-    const isUpdated = await this.verifyChanges(user, updateUserDto);
+    const isUpdated = await this.verifyChanges(user, updateUserDto, image);
     if (!isUpdated) {
       throw new BadRequestException({ error: 'No changes were made!' });
     }
@@ -55,13 +61,15 @@ export class UsersService {
     return await this.usersRepository.save(user);
   }
 
-  async verifyChanges(user: User, updateUserDto: UpdateUserDto): Promise<boolean> {
+  async verifyChanges(user: User, updateUserDto: UpdateUserDto, image?: Express.Multer.File): Promise<boolean> {
     if (updateUserDto.name && updateUserDto.name !== user.name) return true;
     if (updateUserDto.surname && updateUserDto.surname !== user.surname) return true;
     if (updateUserDto.weight && updateUserDto.weight !== user.weight) return true;
     if (updateUserDto.height && updateUserDto.height !== user.height) return true;
     if (updateUserDto.sex && updateUserDto.sex !== user.sex) return true;
     if (updateUserDto.address && updateUserDto.address !== user.address) return true;
+
+    if (image) return true;
 
     return false;
   }

@@ -1,0 +1,12 @@
+@media screen and (max-width: 900px) {
+  .edit_user_custom_modal_main {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .edit_user_form_wrapper {
+    margin-right: 0px;
+  }
+}

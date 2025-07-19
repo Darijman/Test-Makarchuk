@@ -4,10 +4,20 @@
   background-color: var(--foreground-color);
   border-radius: 10px;
   width: 100%;
+  max-width: 700px;
   overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-evenly;
   &:hover {
     background-color: var(--hover-color);
   }
+}
+
+.user_card_avatar {
+  background-color: var(--background-color);
+  flex-shrink: 0;
+  margin: 0px 20px 20px 0px;
 }
 
 .user_card_list {
@@ -21,6 +31,22 @@
   align-items: center;
   margin-bottom: 10px;
   width: 200px;
+}
+
+.user_card_list_item:nth-child(1) {
+  margin-bottom: 0px;
+}
+
+.user_card_name,
+.user_card_surname {
+  margin: 0px !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user_card_surname {
+  margin: 0px 0px 10px 0px !important; 
 }
 
 .user_card_list_item_text {
@@ -56,3 +82,9 @@
   border: 1px solid var(--submit-button-color) !important;
 }
 
+.user_card_date_created {
+  position: absolute;
+  right: 20px;
+  top: 10px;
+  color: var(--secondary-text-color);
+}

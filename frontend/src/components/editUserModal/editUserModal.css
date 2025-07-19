@@ -1,0 +1,84 @@
+.edit_user_custom_modal .ant-modal {
+  width: 800px !important;
+}
+
+.edit_user_custom_modal .ant-modal-content {
+  background-color: var(--background-color) !important;
+  color: var(--primary-text-color) !important;
+}
+
+.edit_user_custom_modal .ant-modal-title {
+  font-size: 25px;
+  font-weight: bold !important;
+  background-color: var(--background-color) !important;
+}
+
+.edit_user_custom_modal .ant-modal-header {
+  background-color: var(--background-color);
+  border-bottom: 1px solid var(--foreground-color);
+}
+
+.edit_user_custom_modal_content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.edit_user_custom_modal_main {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.edit_user_custom_modal .ant-btn-primary {
+  background-color: var(--submit-button-color) !important;
+  border-color: var(--submit-button-color) !important;
+  color: #ffffff;
+  text-transform: uppercase;
+}
+
+.edit_user_custom_modal .ant-btn-primary:hover {
+  background-color: var(--submit-button-color) !important;
+  border-color: var(--submit-button-color) !important;
+  color: #ffffff !important;
+  opacity: 0.7;
+}
+
+.edit_user_custom_modal .ant-btn-default {
+  background-color: var(--secondary-text-color);
+  color: #ffffff;
+  border-color: var(--secondary-text-color);
+  text-transform: uppercase;
+}
+
+.edit_user_custom_modal .ant-btn-default:hover {
+  background-color: var(--secondary-text-color) !important;
+  border-color: var(--secondary-text-color) !important;
+  color: #ffffff !important;
+  opacity: 0.7;
+}
+
+.edit_user_custom_modal .ant-modal-close {
+  color: var(--secondary-text-color) !important;
+}
+
+.edit_user_form_wrapper {
+  width: 100%;
+  margin-right: 40px;
+}
+
+.edit_user_save_button:disabled {
+  background-color: #d9d9d9 !important;
+  color: #999 !important;
+  border-color: #d9d9d9 !important;
+  cursor: not-allowed;
+  opacity: 1 !important;
+  &:hover {
+    background-color: #d9d9d9 !important;
+    color: #999 !important;
+    border-color: #d9d9d9 !important;
+  }
+}

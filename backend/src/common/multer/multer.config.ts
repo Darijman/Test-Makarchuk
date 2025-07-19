@@ -1,9 +1,8 @@
 import { diskStorage, FileFilterCallback } from 'multer';
 import type { Request } from 'express';
-import type { Express } from 'express';
 import * as path from 'path';
 
-const allowedTypes = /jpeg|jpg|png|svg/;
+const allowedTypes = /jpeg|jpg|png|svg|avif/;
 
 export const multerConfig = {
   storage: diskStorage({

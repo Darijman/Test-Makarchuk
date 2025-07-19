@@ -1,4 +1,17 @@
-import { Controller, Get, Delete, Body, Param, UseInterceptors, Put, Post, UploadedFile } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Delete,
+  Body,
+  Param,
+  UseInterceptors,
+  Put,
+  Post,
+  UploadedFile,
+  Query,
+  BadRequestException,
+  Req,
+} from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './updateUser.dto';
 import { User } from './user.entity';
@@ -14,8 +27,8 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get()
-  async getAllUsers(): Promise<User[]> {
-    return await this.usersService.getAllUsers();
+  async getAllUsers(@Query('offset') offset = 0, @Query('limit') limit = 10): Promise<{ users: User[]; totalUsers: number }> {
+    return await this.usersService.getAllUsers(Number(offset), Number(limit));
   }
 
   @Get(':userId')
@@ -25,7 +38,11 @@ export class UsersController {
 
   @Post()
   @UseInterceptors(FileInterceptor('image', multerConfig))
-  async createNewUser(@Body() createUserDto: CreateUserDto, @UploadedFile() image: Express.Multer.File): Promise<User> {
+  async createNewUser(@Body() createUserDto: CreateUserDto, @UploadedFile() image: Express.Multer.File, @Req() req: Request): Promise<User> {
+    if (req['fileValidationError']) {
+      throw new BadRequestException({ error: req['fileValidationError'].error });
+    }
+
     const imagePath = image?.filename || '';
     const userData = {
       ...createUserDto,
@@ -54,9 +71,9 @@ export class UsersController {
 
     const userData = {
       ...updateUserDto,
-      imagePath: image.filename,
+      ...(image && { imagePath: image.filename }),
     };
-    return await this.usersService.updateUserById(userId, userData);
+    return await this.usersService.updateUserById(userId, userData, image);
   }
 
   @Delete(':userId')

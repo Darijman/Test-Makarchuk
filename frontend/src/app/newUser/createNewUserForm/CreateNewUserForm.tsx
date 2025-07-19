@@ -1,13 +1,15 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { useAppDispatch } from '@/hooks/reduxHooks';
 import { InputField } from '@/components/inputField/InputField';
-import { Typography, Form, Upload, Button, message } from 'antd';
+import { Typography, Form, Upload, Button, message, FormInstance } from 'antd';
 import { Select } from '@/components/select/Select';
 import { UploadOutlined } from '@ant-design/icons';
+import { SEX, User } from '@/interfaces/user';
+import { BASE_URL } from '../../../../axiosConfig';
+import { createUser } from '@/store/slices/usersSlice/usersRequests';
 import type { UploadFile } from 'antd';
-import { SEX } from '@/interfaces/user';
-import api from '../../../../axiosConfig';
 import './createNewUserForm.css';
 
 const { Paragraph } = Typography;
@@ -17,7 +19,7 @@ const selectOptions: { value: string; label: string }[] = [
   { value: SEX.FEMALE, label: SEX.FEMALE },
 ];
 
-interface CreateNewUserForm {
+export interface ICreateNewUserForm {
   name: string;
   surname: string;
   weight: number;
@@ -27,24 +29,53 @@ interface CreateNewUserForm {
   image: UploadFile[];
 }
 
-export const CreateNewUserForm = () => {
-  const [form] = Form.useForm<CreateNewUserForm>();
+interface Props {
+  style?: React.CSSProperties;
+  edit?: boolean;
+  editedUser?: User;
+  onChange?: (user: Partial<User>) => void;
+  onImageChange?: (file: File | null) => void;
+  formInstance?: FormInstance<ICreateNewUserForm>;
+}
+
+export const CreateNewUserForm = ({ style, edit, editedUser, onChange, onImageChange, formInstance }: Props) => {
+  const dispatch = useAppDispatch();
+  const [innerForm] = Form.useForm<ICreateNewUserForm>();
+  const form = formInstance || innerForm;
+
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
   const [messageApi, contextHolder] = message.useMessage({ maxCount: 2, duration: 5 });
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
+  useEffect(() => {
+    if (editedUser?.imagePath) {
+      setFileList([
+        {
+          uid: '-1',
+          name: 'profile.jpg',
+          status: 'done',
+          url: `${BASE_URL}/uploads/${editedUser.imagePath}`,
+        },
+      ]);
+    } else {
+      setFileList([]);
+    }
+  }, [editedUser]);
+
   const onFinishFailed = () => {
     setIsSubmitted(true);
   };
 
-  const onFinish = async (values: CreateNewUserForm) => {
+  const onFinish = async (values: ICreateNewUserForm) => {
     setIsSubmitted(true);
     setIsSubmitting(true);
 
     const imageFile = values.image?.[0]?.originFileObj;
     if (!imageFile) {
+      messageApi.error('Please upload an image');
+      setIsSubmitting(false);
       return;
     }
 
@@ -58,33 +89,57 @@ export const CreateNewUserForm = () => {
     formData.append('image', imageFile);
 
     try {
-      await api.post(`/users`, formData);
+      await dispatch(createUser(formData)).unwrap();
 
       messageApi.open({
         type: 'success',
         content: 'The user was created successfully!',
       });
       form.resetFields();
-    } catch {
+      setFileList([]);
+    } catch (error: any) {
+      console.log(`error`, error);
+
       messageApi.open({
         type: 'error',
-        content: 'Something went wrong! Try again later..',
+        content: error.error || 'Something went wrong! Try again later..',
       });
     } finally {
       setIsSubmitting(false);
+      setIsSubmitted(false);
     }
   };
 
   return (
-    <div className='create_new_user_form'>
+    <div className='create_new_user_form' style={style}>
       {contextHolder}
       <Form
         form={form}
-        name='create_new_user_form'
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}
         layout='vertical'
         style={{ width: '100%' }}
+        initialValues={{
+          name: editedUser?.name,
+          surname: editedUser?.surname,
+          weight: editedUser?.weight,
+          height: editedUser?.height,
+          sex: editedUser?.sex,
+          address: editedUser?.address,
+          image: editedUser?.imagePath
+            ? [
+                {
+                  uid: '-1',
+                  name: 'profile.jpg',
+                  status: 'done',
+                  url: `${BASE_URL}/uploads/${editedUser.imagePath}`,
+                },
+              ]
+            : [],
+        }}
+        onValuesChange={(_, allValues) => {
+          onChange?.(allValues);
+        }}
       >
         <Form.Item
           name='name'
@@ -248,13 +303,34 @@ export const CreateNewUserForm = () => {
             name='avatar'
             listType='picture'
             fileList={fileList}
-            beforeUpload={() => false}
-            onPreview={() => {}}
-            onChange={({ fileList: newFileList }) => {
-              setFileList(newFileList.slice(-1));
+            beforeUpload={(file) => {
+              onImageChange?.(file);
+              return false;
             }}
             maxCount={1}
-            accept='image/*'
+            accept='.jpg,.jpeg,.png,.svg,.avif'
+            onChange={({ fileList: newFileList }) => {
+              const lastFile = newFileList.slice(-1);
+              setFileList(lastFile);
+              form.setFieldsValue({ image: lastFile });
+            }}
+            onRemove={() => {
+              setFileList([]);
+              form.setFieldsValue({ image: [] });
+              return true;
+            }}
+            defaultFileList={
+              editedUser?.imagePath
+                ? [
+                    {
+                      uid: '-1',
+                      name: 'profile.jpg',
+                      status: 'done',
+                      url: `${BASE_URL}/uploads/${editedUser.imagePath}`,
+                    },
+                  ]
+                : []
+            }
             style={{
               border: isSubmitted && !fileList.length ? '2px solid var(--red-color)' : '2px solid var(--foreground-color)',
             }}
@@ -267,11 +343,13 @@ export const CreateNewUserForm = () => {
           </Upload.Dragger>
         </Form.Item>
 
-        <Form.Item>
-          <Button htmlType='submit' type='primary' style={{ width: '100%', height: '35px' }} loading={isSubmitting}>
-            Create New User
-          </Button>
-        </Form.Item>
+        {edit ? null : (
+          <Form.Item>
+            <Button htmlType='submit' type='primary' style={{ width: '100%', height: '35px' }} loading={isSubmitting}>
+              Create New User
+            </Button>
+          </Form.Item>
+        )}
       </Form>
     </div>
   );

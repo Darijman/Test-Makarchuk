@@ -1,0 +1,23 @@
+@media screen and (max-width: 500px) {
+  .user_card {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .user_card_avatar {
+    margin: 0px 0px 20px 0px;
+  }
+
+  .user_card_list_item {
+    width: 150px;
+  }
+}
+
+@media screen and (max-width: 320px) {
+  .user_card_date_created {
+    right: 0px;
+    top: 5px;
+    left: 10px;
+  }
+}
