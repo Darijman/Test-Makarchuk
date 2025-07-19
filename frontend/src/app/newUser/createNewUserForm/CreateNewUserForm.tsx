@@ -193,7 +193,7 @@ export const CreateNewUserForm = ({ style, edit, editedUser, onChange, onImageCh
           ]}
         >
           <InputField
-            placeHolder='Weight'
+            placeHolder='Weight*'
             maxLength={5}
             inputMode='decimal'
             suffix='kg'

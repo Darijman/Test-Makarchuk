@@ -1,0 +1,52 @@
+services:
+  mysql:
+    image: mysql:8
+    container_name: mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456789
+      MYSQL_DATABASE: Test-Makarchuk
+      MYSQL_PASSWORD: 123456789
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - test-makarchuk
+
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    restart: always
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_HOST: mysql
+      DATABASE_PORT: 3306
+      DATABASE_USER: root
+      DATABASE_PASSWORD: 123456789
+      DATABASE_NAME: Test-Makarchuk
+    ports:
+      - "9000:9000"
+    networks:
+      - test-makarchuk
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    restart: always
+    depends_on:
+      - backend
+    ports:
+      - "3000:3000"
+    networks:
+      - test-makarchuk
+
+volumes:
+  mysql-data:
+
+networks:
+  test-makarchuk:
+    driver: bridge

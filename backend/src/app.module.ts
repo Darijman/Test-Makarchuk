@@ -7,13 +7,13 @@ import { UsersModule } from './users/users.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'mysql',
       port: 3306,
       username: 'root',
       password: '123456789',
       database: 'Test-Makarchuk',
       entities: [User],
-      synchronize: false,
+      synchronize: true,
     }),
     UsersModule,
   ],
